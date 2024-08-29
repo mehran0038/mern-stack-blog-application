@@ -1,0 +1,93 @@
+npm init -y
+
+----------------------Add dependencies--------------------
+npm i express mongoose colors morgan cors dotenv nodemon
+
+#mongoose - for database
+#colors - for console colorfull messages
+#morgan - for check console api request k kitna time lia ha  konsa url hit hua ye sari chezain
+#cors - because we have two server one react and second node to dono k beech ma cross oringin ka error asakta ha
+#dotenv - for make application secure jo b confidential data rahy ga usy .env main rakhain gy
+#nodemon - for running server in watch mode
+
+----------------------Server.js--------------
+add file on root 'server.js'
+
+-------------------Package.json-----------------
+ "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js"
+  },
+
+npm i bcrypt //for hash password
+
+
+--------------------------------------
+****Starting a Session:****
+const session = await mongoose.startSession();
+
+A new session is started with Mongoose. This session will be used to group database operations into a single transaction.
+A transaction ensures that all operations either complete successfully together or none of them are applied, which helps maintain data consistency.
+
+
+****Starting a Transaction:****
+session.startTransaction();
+The transaction is started within the session. From this point on, all database operations within the session will be part of the transaction.
+
+****Saving the New Blog with the Session:*****
+
+The newBlog is saved to the database, but it's saved as part of the transaction (thanks to the { session } option).
+This means the save operation is not finalized until the transaction is committed.
+await newBlog.save({ session });
+
+
+****Updating the Existing User:****
+
+The code assumes there's an existing user (exisitingUser) who is associated with this new blog post.
+The new blog is pushed into the user's blogs array (assuming blogs is an array in the user model that stores the user's blog posts).
+exisitingUser.blogs.push(newBlog);
+
+
+****Saving the User with the Session:****
+
+The updated user is then saved to the database, again as part of the same transaction. This ensures that both the blog post and the user's blog list are updated together.
+await exisitingUser.save({ session });
+
+****Committing the Transaction:****
+
+The transaction is committed, meaning all the changes made during the transaction (saving the blog and updating the user) are finalized and applied to the database.
+await session.commitTransaction();
+
+
+
+----------------------Front end React-----------------
+
+npx create-react-app client
+npm start
+npm install @mui/material @emotion/react @emotion/styled
+npm install @mui/icons-material
+npm i react-hot-toast
+ <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+  />
+  npm i react-router-dom
+
+  npm install @reduxjs/toolkit
+  npm install react-redux
+  npm i axios
+package.json
+  "proxy": "http://localhost:8080",
+
+
+
+  ---------------server----------
+  npm i concurrently //use to run client and server both at a time
+package.json
+   "start": "node server.js",
+    "server": "nodemon server.js",
+    "client":"npm start --prefix ./client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+
+
+    10 se
